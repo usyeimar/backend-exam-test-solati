@@ -3,8 +3,10 @@
 >Un ejemplo básico de un proxy inverso que utiliza Docker Compose y Traefik.
 
 ## Conceptos Rapidos
-En circunstancias normales en el desarrollo local, podría servir una aplicación Laravel y una aplicación Vue en localhost pero en dos puertos diferentes. 
-Por ejemplo, :8081 y :8082. 
+En circunstancias normales en el desarrollo local, podría servir una aplicación Laravel y una aplicación Vue en localhost pero en dos puertos diferentes.
+
+Por ejemplo, :8081 y :8082.
+
 Por lo general, esto no es gran cosa, pero a veces puede causar conflictos, ya que la mayoría de los navegadores consideran que diferentes puertos son iguales a nombres de dominio de nivel superior separados. Lo que significa que es posible que cosas como las cookies entre sitios y algunos métodos de autenticación no funcionen según lo previsto.
 
 Lo que hace Traefik es actuar como proxy inverso. Asigna a sí mismo todo el tráfico del puerto: 80 en la máquina que lo ejecuta. A partir de ahí, configura nombres de dominio o rutas de acceso específicos para adjuntarlos a los servicios en su configuración de Docker. 
