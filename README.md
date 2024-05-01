@@ -38,6 +38,20 @@ Utilizando los valores proporcionados de forma predeterminada, ahora deberían e
 
 
 
-#Previews
+# Previews
+
+1. Esta es una captura del inicio de sesion 
+
+![Login](./docs/01.jpeg)
+
+2. Ingresar usuario y contraseña
+![Modulo de tareas](./docs/02.jpeg)
+
+3. Cargar tareas
+![Crear tarea](./docs/03.jpeg)
+
+5. Crear tarea
+![Crear tarea](./docs/04.jpg)
+
 
 
