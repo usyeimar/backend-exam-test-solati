@@ -15,13 +15,13 @@
 1. Clone the repository
 
     ```sh
-    https://github.com/usyeimar/backend-exam-api.git
+    https://github.com/usyeimar/backend-exam-test-solati.git
     ```
 
 2. Install dependencies
 
     ```sh
-    composer install
+    cd backend  && composer install
     ```
 
 3. Create a copy of the .env file
