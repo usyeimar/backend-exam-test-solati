@@ -1,0 +1,105 @@
+version: "3"
+services:
+  pgsql:
+    image: postgres:16.2
+    container_name: todo-app-pgsql
+    restart: unless-stopped
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_DB: tasks_db
+
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    volumes:
+      - ./scripts/pgsql:/docker-entrypoint-initdb.d
+      - .data/pgsql:/var/lib/postgresql/data
+    networks:
+      - todo-app-network
+
+  adminer:
+    image: adminer
+    container_name: todo-app-adminer
+    restart: unless-stopped
+    ports:
+      - "8080:8080"
+    networks:
+      - todo-app-network
+
+  api:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    image: todo-app-api
+    container_name: todo-app-api
+    restart: unless-stopped
+    ports:
+      - "8081:8081"
+    volumes:
+      - ./backend:/var/www/html
+    labels:
+     - "traefik.http.routers.api.rule=(Host(`todo-app.localhost`) && PathPrefix(`/api`))"
+    depends_on:
+      - pgsql
+      - traeffik
+    networks:
+      - todo-app-network
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - "8082:8082"
+  
+    labels:
+      - "traefik.http.routers.site.rule=Host(`todo-app.localhost`)"
+    container_name: todo-app-frontend
+    depends_on:
+      - api
+      - traeffik
+    networks:
+      - todo-app-network
+
+  nginx:
+    depends_on:
+      - frontend
+      - api
+    image: nginx:alpine
+    container_name: todo-app-nginx
+    restart: unless-stopped
+    ports:
+      - "8089:80"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/conf.d/default.conf
+    networks:
+      - todo-app-network
+
+  traeffik:
+    image: traefik:v3.0
+    container_name: todo-app-traefik
+    restart: unless-stopped
+     # Enables the web UI and tells Traefik to listen to docker
+    command: --api.insecure=true --providers.docker
+    ports:
+      - "8083:8080"
+      - "80:80"
+      - "443:443"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      
+    networks:
+      - todo-app-network
+
+networks:
+  todo-app-network:
+    driver: bridge
+
+volumes:
+  pgsql:
+    driver: local
