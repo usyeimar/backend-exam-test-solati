@@ -31,10 +31,9 @@ class Task extends Model
     {
         parent::boot();
         static::creating(function ($task) {
-            $task->uuid = (string)Str::uuid();
+            $task->uuid = (string) Str::uuid();
         });
     }
-
 
     public function user(): BelongsTo
     {
@@ -48,7 +47,7 @@ class Task extends Model
 
     public function scopeCompleted($query)
     {
-        return $query->where('completed', true);
+        return $query->where('completed');
     }
 
     public function scopePending($query)
@@ -75,7 +74,7 @@ class Task extends Model
     {
         return $query->whereBetween('due_at', [
             now()->startOfWeek()->toDateString(),
-            now()->endOfWeek()->toDateString()
+            now()->endOfWeek()->toDateString(),
         ]);
     }
 
@@ -83,7 +82,7 @@ class Task extends Model
     {
         return $query->whereBetween('due_at', [
             now()->addWeek()->startOfWeek()->toDateString(),
-            now()->addWeek()->endOfWeek()->toDateString()
+            now()->addWeek()->endOfWeek()->toDateString(),
         ]);
     }
 
@@ -91,7 +90,7 @@ class Task extends Model
     {
         return $query->whereBetween('due_at', [
             now()->startOfMonth()->toDateString(),
-            now()->endOfMonth()->toDateString()
+            now()->endOfMonth()->toDateString(),
         ]);
     }
 }

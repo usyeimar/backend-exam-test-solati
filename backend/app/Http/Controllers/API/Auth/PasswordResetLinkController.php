@@ -14,10 +14,6 @@ class PasswordResetLinkController extends Controller
      * Enviar enlace de restablecimiento de contraseña.
      *
      * Atraves de esta API, se envía un enlace al correo electrónico del usuario para restablecer su contraseña.
-     *
-     * @param Request $request
-     *
-     * @return JsonResponse
      */
     public function store(Request $request): JsonResponse
     {

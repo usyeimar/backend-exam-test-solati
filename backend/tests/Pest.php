@@ -69,11 +69,10 @@ function passport(): void
     config()->set('passport.password_grant_client.secret', $passwordClient->secret);
 }
 
-function signIn(User $user = null): User
+function signIn(?User $user = null): User
 {
     if (is_null($user)) {
         $user = User::factory()->create();
-
 
         $user->save();
 
@@ -92,4 +91,3 @@ function signIn(User $user = null): User
 
     return $user;
 }
-

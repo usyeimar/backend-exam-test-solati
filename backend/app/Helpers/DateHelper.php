@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Auth;
 class DateHelper
 {
     const TIME_STAMP_FORMAT = 'Y-m-d\TH:i:s\Z';
+
     const SHORT_DATE_FORMAT = 'Y-m-d';
 
     /**
@@ -50,7 +51,7 @@ class DateHelper
      * If timezone is given, it parse the date with this timezone.
      * Always return a date with default timezone (UTC).
      */
-    public static function parseDate(Carbon|string $date, string $timezone = null): ?Carbon
+    public static function parseDate(Carbon|string $date, ?string $timezone = null): ?Carbon
     {
         if (! $date instanceof Carbon) {
             try {
@@ -97,7 +98,6 @@ class DateHelper
 
         return $date->getTimestamp();
     }
-
 
     /**
      * Get the timezone of the current user, or null.
@@ -182,9 +182,9 @@ class DateHelper
     /**
      * Add a given number of week/month/year to a date.
      *
-     * @param  Carbon  $date the start date
-     * @param  string  $frequency week/month/year
-     * @param  int  $number the number of week/month/year to increment to
+     * @param  Carbon  $date  the start date
+     * @param  string  $frequency  week/month/year
+     * @param  int  $number  the number of week/month/year to increment to
      */
     public static function addTimeAccordingToFrequencyType(Carbon $date, string $frequency, int $number): Carbon
     {

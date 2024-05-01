@@ -1,7 +1,11 @@
 <?php
 
 use App\Models\Task;
-use function Pest\Laravel\{getJson, postJson, patchJson, deleteJson};
+
+use function Pest\Laravel\deleteJson;
+use function Pest\Laravel\getJson;
+use function Pest\Laravel\patchJson;
+use function Pest\Laravel\postJson;
 
 beforeEach(function () {
     passport(); // Initialize passport for testing
@@ -16,7 +20,6 @@ test('it can create task', function () {
         'description' => 'Description 1',
         'due_at' => '2024/04/30',
     ]);
-
 
     $response->assertStatus(201)
         ->assertJsonStructure([
@@ -41,7 +44,6 @@ test('it can create task', function () {
         'due_at' => '2024-04-30',
     ]);
 })->group('task');
-
 
 test('it can update task', function () {
     signIn();
@@ -73,7 +75,6 @@ test('it can update task', function () {
     ]);
 })->group('task');
 
-
 test('it can delete task', function () {
     signIn();
 
@@ -83,7 +84,6 @@ test('it can delete task', function () {
 
     $response->assertOk();
 })->group('task');
-
 
 test('it can list tasks', function () {
     signIn();
@@ -109,7 +109,6 @@ test('it can list tasks', function () {
             ],
         ]);
 })->group('task');
-
 
 test('it can show task', function () {
     signIn();

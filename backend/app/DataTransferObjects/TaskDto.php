@@ -6,18 +6,14 @@ use Carbon\Carbon;
 
 readonly class TaskDto
 {
-
-
     public function __construct(
-        private readonly ?string             $title,
-        private readonly ?string             $description,
+        private readonly ?string $title,
+        private readonly ?string $description,
         private readonly ?\DateTimeImmutable $completed_at,
         private readonly ?\DateTimeImmutable $due_at,
-        private readonly bool                $completed = false,
-    )
-    {
+        private readonly bool $completed = false,
+    ) {
     }
-
 
     public function title(): ?string
     {
@@ -44,7 +40,6 @@ readonly class TaskDto
         return $this->completed;
     }
 
-
     public static function fromArray(array $data): self
     {
         return new self(
@@ -55,5 +50,4 @@ readonly class TaskDto
             completed: $data['completed'] ?? false,
         );
     }
-
 }

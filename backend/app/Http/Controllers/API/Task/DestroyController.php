@@ -4,18 +4,20 @@ namespace App\Http\Controllers\API\Task;
 
 use App\Http\Controllers\Controller;
 use App\Services\TaskService;
-use Illuminate\Http\Request;
 use Throwable;
 
 class DestroyController extends Controller
 {
     /**
-     * Handle the incoming request.
+     * Eliminar una tarea por su UUID
+     *
+     * Este endpoint permite eliminar una tarea por su UUID.
      */
     public function __invoke(string $task_uuid, TaskService $service)
     {
         try {
             $task = $service->delete(task_uuid: $task_uuid);
+
             return response()->json([
                 'success' => $task->success(),
                 'message' => $task->message(),
@@ -26,9 +28,9 @@ class DestroyController extends Controller
                 'errors' => [
                     [
                         'title' => 'Algo salió mal',
-                        'detail' => $e->getMessage()
-                    ]
-                ]
+                        'detail' => $e->getMessage(),
+                    ],
+                ],
             ], 400);
         }
     }

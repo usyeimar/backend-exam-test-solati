@@ -4,18 +4,20 @@ namespace App\Http\Controllers\API\Task;
 
 use App\Http\Controllers\Controller;
 use App\Services\TaskService;
-use Illuminate\Http\Request;
 use Throwable;
 
 class IndexController extends Controller
 {
     /**
-     * Handle the incoming request.
+     * Listar todas las tareas.
+     *
+     * Este endpoint permite listar todas las tareas.
      */
     public function __invoke(TaskService $service)
     {
         try {
             $tasks = $service->index();
+
             return $tasks->data();
         } catch (Throwable $e) {
             return response()->json([
@@ -23,9 +25,9 @@ class IndexController extends Controller
                 'errors' => [
                     [
                         'title' => 'Algo salió mal',
-                        'detail' => $e->getMessage()
-                    ]
-                ]
+                        'detail' => $e->getMessage(),
+                    ],
+                ],
             ], 400);
         }
     }

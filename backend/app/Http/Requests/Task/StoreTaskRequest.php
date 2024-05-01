@@ -7,7 +7,6 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class StoreTaskRequest extends FormRequest
 {
-
     /**
      * Get the validation rules that apply to the request.
      *
@@ -30,20 +29,18 @@ class StoreTaskRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'title.required' => 'El título es requerido',
-            'title.string' => 'El título debe ser un texto',
-            'description.required' => 'La descripción es requerida',
-            'description.string' => 'La descripción debe ser un texto',
-            'due_at.required' => 'La fecha de vencimiento es requerida',
-            'due_at.date' => 'La fecha de vencimiento debe ser una fecha',
-            'due_at.after' => 'La fecha de vencimiento debe ser después de hoy',
-            'due_at.date_format' => 'La fecha de vencimiento debe tener el formato Y-m-d',
+            'title.required' => 'The title is required', // 'El título es requerido
+            'title.string' => 'The title must be a string', // 'El título debe ser una cadena de texto
+            'description.required' => 'The description is required', // 'La descripción es requerida
+            'description.string' => 'The description must be a string', // 'La descripción debe ser una cadena de texto
+            'due_at.required' => 'The due date is required', // 'La fecha de vencimiento es requerida
+            'due_at.date' => 'The due date must be a date', // 'La fecha de vencimiento debe ser una fecha
+
         ];
     }
 
     /**
      * Get Task data transfer object
-     * @return TaskDto
      */
     public function dto(): TaskDto
     {

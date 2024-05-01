@@ -43,7 +43,7 @@ services:
     volumes:
       - ./backend:/var/www/html
     labels:
-     - "traefik.http.routers.api.rule=(Host(`todo-app.localhost`) && PathPrefix(`/api`))"
+     - "traefik.http.routers.api.rule=(Host(`todo-app.api.localhost`))"
     depends_on:
       - pgsql
       - traeffik
@@ -58,7 +58,7 @@ services:
       - "8082:8082"
   
     labels:
-      - "traefik.http.routers.site.rule=Host(`todo-app.localhost`)"
+      - "traefik.http.routers.site.rule=Host(`todo-app.frontend.localhost`)"
     container_name: todo-app-frontend
     depends_on:
       - api

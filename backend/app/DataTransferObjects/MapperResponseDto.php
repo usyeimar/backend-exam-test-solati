@@ -4,15 +4,14 @@ namespace App\DataTransferObjects;
 
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
-readonly  class MapperResponseDto
+readonly class MapperResponseDto
 {
     public function __construct(
-        private bool                              $success,
-        private string                            $message,
+        private bool $success,
+        private string $message,
         private array|AnonymousResourceCollection $data,
-        private array                             $errors = []
-    )
-    {
+        private array $errors = []
+    ) {
     }
 
     public function success(): bool
@@ -51,9 +50,7 @@ readonly  class MapperResponseDto
             'success' => $this->success,
             'message' => $this->message,
             'data' => $this->data,
-            'errors' => $this->errors
+            'errors' => $this->errors,
         ];
     }
-
-
 }

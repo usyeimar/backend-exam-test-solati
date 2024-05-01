@@ -166,7 +166,7 @@ class PassportInstall extends Command
     /**
      * Output the client's ID and secret key.
      */
-    protected function outputClientDetails(Client $client, string $type = null): void
+    protected function outputClientDetails(Client $client, ?string $type = null): void
     {
         if (Passport::$hashesClientSecrets) {
             $this->line(

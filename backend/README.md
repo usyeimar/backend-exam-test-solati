@@ -1,6 +1,6 @@
 # Todo API
 
-> 
+>
 
 ### Requirements
 
@@ -42,7 +42,8 @@
     php artisan migrate --seed
     ```
 
-6. Project comes with Passport include as the default authenticatin method. You should now install it using this command.
+6. Project comes with Passport include as the default authenticatin method. You should now install it using this
+   command.
 
     ```
     php artisan passport:install
@@ -57,23 +58,18 @@
     ```
 
 8. Run the application
-    
+
     ```sh
     php artisan serve
     ```
 
-9.  Run Imsomnia API
+9. Run Postman API
 
-    [![Run in Insomnia}](https://insomnia.rest/images/run.svg)](https://insomnia.rest/run/?label=Customer%20API%20&uri=https%3A%2F%2Fgithub.com%2Fusyeimar%2Fbackend-exam-api%2Fbackend-exam-api-collection.json)
+   [<img src="https://run.pstmn.io/button.svg" alt="Run In Postman" style="width: 128px; height: 32px;">](https://app.getpostman.com/run-collection/14969501-31fac7be-60ad-4188-a53d-2863a977eab5?action=collection%2Ffork&source=rip_markdown&collection-url=entityId%3D14969501-31fac7be-60ad-4188-a53d-2863a977eab5%26entityType%3Dcollection%26workspaceId%3D08af0b8c-1618-460b-a1d3-f902ca38ca53)
 
 ### Code Quality Tools
 
 - [Laravel Pint](https://github.com/laravel/pint)
-
-### API Docs Tools
-
-- [Laravel OpenAPI](https://github.com/vyuldashev/laravel-openapi)
-- [Laravel Stoplight Elements](https://github.com/JustSteveKing/laravel-stoplight-elements)
 
 ### ✅ Tests execution
 

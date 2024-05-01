@@ -1,10 +1,10 @@
 <?php
 
-use App\Http\Controllers\API\Task\IndexController;
-use App\Http\Controllers\API\Task\StoreController;
-use App\Http\Controllers\API\Task\ShowController;
-use App\Http\Controllers\API\Task\UpdateController;
 use App\Http\Controllers\API\Task\DestroyController;
+use App\Http\Controllers\API\Task\IndexController;
+use App\Http\Controllers\API\Task\ShowController;
+use App\Http\Controllers\API\Task\StoreController;
+use App\Http\Controllers\API\Task\UpdateController;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('tasks')

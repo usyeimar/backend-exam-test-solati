@@ -12,12 +12,12 @@ class ForceJson
     /**
      * Handle an incoming request.
      *
-     * @param \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response) $next
+     * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
      */
     public function handle(Request $request, Closure $next): Response
     {
         $acceptHeader = $request->headers->get('Accept');
-        if (!Str::contains($acceptHeader, 'application/json')) {
+        if (! Str::contains($acceptHeader, 'application/json')) {
             $newAcceptHeader = 'application/json';
             if ($acceptHeader) {
                 $newAcceptHeader .= "/$acceptHeader";

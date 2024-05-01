@@ -1,13 +1,25 @@
 <?php
 
+use function Pest\Laravel\postJson;
+beforeEach(function () {
+    passport();
+});
+
 test('new users can register', function () {
-    $response = $this->post('/api/v1/auth/register', [
+    $response = postJson('/api/v1/auth/register', [
         'name' => 'Test User',
         'email' => 'test@example.com',
         'password' => 'password',
         'password_confirmation' => 'password',
-    ]);
+    ])->assertCreated();
 
-    $this->assertAuthenticated();
-    $response->assertNoContent();
+    $response->assertJsonStructure([
+        'data' => [
+            'token' => [
+                'value',
+                'expires_at',
+                'expires_in',
+            ]
+        ],
+    ]);
 });
