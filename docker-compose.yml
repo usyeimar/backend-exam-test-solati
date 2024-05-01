@@ -48,26 +48,26 @@ services:
     depends_on:
       - pgsql
       - traeffik
-    command:
+
     networks:
       - todo-app-network
 
-  # frontend:
-  #   build:
-  #     context: ./frontend
-  #     dockerfile: Dockerfile
-  #   ports:
-  #     - "8082:8082"
-  #   tty: true
-  #   labels:
-  #     - "traefik.http.routers.site.rule=Host(`todo-app.frontend.localhost`)"
-  #   container_name: todo-app-frontend
-  #   depends_on:
-  #     - api
-  #     - traeffik
-    
-  #   networks:
-  #     - todo-app-network
+  frontend:
+     build:
+       context: ./frontend
+       dockerfile: Dockerfile
+     ports:
+       - "8082:8082"
+     tty: true
+     labels:
+       - "traefik.http.routers.site.rule=Host(`todo-app.frontend.localhost`)"
+     container_name: todo-app-frontend
+     depends_on:
+       - api
+       - traeffik
+
+     networks:
+       - todo-app-network
 
   nginx:
     depends_on:
@@ -95,7 +95,7 @@ services:
       - "443:443"
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-      
+
     networks:
       - todo-app-network
 

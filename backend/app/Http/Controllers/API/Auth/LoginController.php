@@ -7,6 +7,7 @@ use App\Http\Requests\Auth\LoginRequest;
 use App\Http\Resources\CheckNullOrEmptyValues;
 use App\Models\User;
 use Exception;
+use Illuminate\Database\QueryException;
 use Laravel\Passport\PersonalAccessTokenResult;
 
 class LoginController extends Controller
@@ -22,7 +23,7 @@ class LoginController extends Controller
         try {
             $token = auth()->attempt($request->only('email', 'password'));
 
-            if (! $token) {
+            if (!$token) {
                 abort(401, 'Las credenciales proporcionadas no coinciden con nuestros registros.');
             }
 
@@ -52,6 +53,10 @@ class LoginController extends Controller
                 ],
             ]));
         } catch (Exception $e) {
+            if ($e instanceof QueryException) {
+                throw $e;
+            }
+
             return response()->json([
                 'success' => false,
                 'errors' => [

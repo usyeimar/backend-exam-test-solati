@@ -6,21 +6,23 @@ use App\Http\Middleware\ForceJson;
 use App\Http\Middleware\OwnCors;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
 use Illuminate\Cookie\Middleware\EncryptCookies;
+use Illuminate\Database\QueryException;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
 use Illuminate\Foundation\Http\Middleware\ValidateCsrfToken;
 use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\StartSession;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Str;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
-        web: __DIR__.'/../routes/web.php',
-        api: __DIR__.'/../routes/api.php',
-        commands: __DIR__.'/../routes/console.php',
+        web: __DIR__ . '/../routes/web.php',
+        api: __DIR__ . '/../routes/api.php',
+        commands: __DIR__ . '/../routes/console.php',
         health: '/up',
     )
     ->withMiddleware(callback: function (Middleware $middleware) {
@@ -51,11 +53,11 @@ return Application::configure(basePath: dirname(__DIR__))
     })
     ->withExceptions(function (Exceptions $exceptions) {
         $exceptions->render(function (\Illuminate\Validation\ValidationException $e) {
-            $errors = collect($e->errors())->map(fn ($error, $key) => [
+            $errors = collect($e->errors())->map(fn($error, $key) => [
                 'title' => 'The given data was invalid.',
                 'detail' => $error[0],
                 'source' => [
-                    'pointer' => '/'.Str::of($key)->replace('.', '/')->value(),
+                    'pointer' => '/' . Str::of($key)->replace('.', '/')->value(),
                 ],
             ])->values();
 
@@ -91,5 +93,28 @@ return Application::configure(basePath: dirname(__DIR__))
                     ],
                 ],
             ], 401);
+        });
+
+        $exceptions->render(function (QueryException $e) {
+
+
+            //if is a database error, run migrations
+            //php artisan migrate
+            Artisan::call('migrate --seed');
+            shell_exec('php artisan api-passport:install --personal');
+
+
+
+
+
+            return response()->json([
+                'success' => false,
+                'errors' => [
+                    [
+                        'title' => 'Database error',
+                        'detail' => 'There was an error with the database, please try again later.',
+                    ],
+                ],
+            ], 500);
         });
     })->create();
