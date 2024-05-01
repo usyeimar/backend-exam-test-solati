@@ -30,7 +30,7 @@ docker-compose up -d
 Utilizando los valores proporcionados de forma predeterminada, ahora deberían estar disponibles dos sitios en el navegador.
 
 - [todo-app.fronted.localhost](http://todo-app.frontend.localhost/): The JavaScript (Vue) app
-- [todo-app.api.localhost/api](http://todo-app.api.localhost): The PHP (Laravel) app
+- [todo-app.api.localhost](http://todo-app.api.localhost): The PHP (Laravel) app
 
 # Documentacion
 
