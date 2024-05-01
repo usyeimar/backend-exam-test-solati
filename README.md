@@ -1,4 +1,4 @@
-# Docker Compose Todo APP With Traefik
+# Proxy Todo APP With Traefik
 
 >Un ejemplo básico de un proxy inverso que utiliza Docker Compose y Traefik.
 
