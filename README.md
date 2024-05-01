@@ -2,7 +2,7 @@
 
 >Un ejemplo básico de un proxy inverso que utiliza Docker Compose y Traefik.
 
-## Conceptos Rapidos
+## Conceptos rápidos
 En circunstancias normales en el desarrollo local, podría servir una aplicación Laravel y una aplicación Vue en `localhost` pero en dos puertos diferentes.
 
 Por ejemplo, `:8081` y `:8082`.
@@ -21,7 +21,7 @@ cd backend && composer install
 cd frontend && pnpm install
 ```
 
-Luego corre todo con * Docker Compose: *
+Luego corre todo con ``Docker Compose: ``
 
 ```
 docker-compose up -d
@@ -29,5 +29,5 @@ docker-compose up -d
 
 Utilizando los valores proporcionados de forma predeterminada, ahora deberían estar disponibles dos sitios en el navegador.
 
-- [todo-app.localhost](http://app.localhost): The JavaScript (Vue) app
-- [todo-app.localhost/api](http://app.localhost/api): The PHP (Laravel) app
+- [todo-app.localhost](http://todo-app.localhost): The JavaScript (Vue) app
+- [todo-app.localhost/api](http://todo-app.localhost/api): The PHP (Laravel) app
