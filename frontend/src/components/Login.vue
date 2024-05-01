@@ -1,14 +1,16 @@
 <script setup lang="ts">
-import { Button } from 'flowbite-vue'
+import { FwbButton } from 'flowbite-vue'
 import http from '@/services/http'
 import { object, string } from 'yup'
 import { ErrorMessage, Field, Form, useForm, useField } from 'vee-validate'
 import { toast } from 'vue3-toastify'
 import { useRouter } from 'vue-router'
 import { isAxiosError } from 'axios'
+import { ref } from 'vue'
 
 
 const router = useRouter()
+const isLoading = ref(false)
 
 const formSchema = object({
   email: string()
@@ -29,18 +31,25 @@ const { value: emailValue } = useField('email')
 const { value: passwordValue } = useField('password')
 
 const onSubmit = handleSubmit(async (values) => {
+  isLoading.value = true
   try {
     await http
-      .post('/auth/login', {
+      .post('/v1/auth/login', {
         email: values.email,
         password: values.password
       })
       .then(({ data }) => {
+        isLoading.value = false
         localStorage.setItem('token', JSON.stringify(data.data.token))
-        toast.success('Bienvenido')
-        router.push({ name: 'home' })
+        toast.success('Bienvenido', {
+          duration: 2000
+        })
+        setTimeout(() => {
+          router.push({ name: 'home' })
+        }, 1000)
       })
   } catch (error) {
+    isLoading.value = false
     if (isAxiosError(error)) {
       const { data } = error.response!
       const { errors } = data
@@ -120,12 +129,19 @@ const onSubmit = handleSubmit(async (values) => {
         </div>
 
         <div class="mt-8 flex flex-col gap-y-4">
+
+
+
+
           <button
+            :disabled="isLoading"
             type="submit"
             class="active:scale-[.98] active:duration-75 transition-all hover:scale-[1.01] ease-in-out transform py-4 bg-green-700 rounded-xl text-white font-semibold text-lg"
           >
-            Iniciar sesión
+            <span v-if="isLoading" class="mr-2">Cargando...</span>
+            <span v-else>Iniciar sesion</span>
           </button>
+
         </div>
 
         <div class="text-sm font-medium text-gray-500 dark:text-gray-400">

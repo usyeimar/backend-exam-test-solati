@@ -10,7 +10,7 @@ services:
       POSTGRES_PASSWORD: postgres
       POSTGRES_USER: postgres
       POSTGRES_DB: tasks_db
-
+    tty: true
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U postgres"]
       interval: 10s
@@ -38,6 +38,7 @@ services:
     image: todo-app-api
     container_name: todo-app-api
     restart: unless-stopped
+    tty: true
     ports:
       - "8081:8081"
     volumes:
@@ -47,28 +48,30 @@ services:
     depends_on:
       - pgsql
       - traeffik
+    command:
     networks:
       - todo-app-network
 
-  frontend:
-    build:
-      context: ./frontend
-      dockerfile: Dockerfile
-    ports:
-      - "8082:8082"
-  
-    labels:
-      - "traefik.http.routers.site.rule=Host(`todo-app.frontend.localhost`)"
-    container_name: todo-app-frontend
-    depends_on:
-      - api
-      - traeffik
-    networks:
-      - todo-app-network
+  # frontend:
+  #   build:
+  #     context: ./frontend
+  #     dockerfile: Dockerfile
+  #   ports:
+  #     - "8082:8082"
+  #   tty: true
+  #   labels:
+  #     - "traefik.http.routers.site.rule=Host(`todo-app.frontend.localhost`)"
+  #   container_name: todo-app-frontend
+  #   depends_on:
+  #     - api
+  #     - traeffik
+    
+  #   networks:
+  #     - todo-app-network
 
   nginx:
     depends_on:
-      - frontend
+      # - frontend
       - api
     image: nginx:alpine
     container_name: todo-app-nginx
