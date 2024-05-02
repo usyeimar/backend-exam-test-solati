@@ -44,10 +44,10 @@ services:
     volumes:
       - ./backend:/var/www/html
     labels:
-     - "traefik.http.routers.api.rule=(Host(`todo-app.api.localhost`))"
+     - "traefik.http.routers.api.rule=(Host(`todo-app.localhost`) && PathPrefix(`/api`))"
     depends_on:
       - pgsql
-      - traeffik
+      - traefik
 
     networks:
       - todo-app-network
@@ -60,11 +60,11 @@ services:
        - "8082:8082"
      tty: true
      labels:
-       - "traefik.http.routers.site.rule=Host(`todo-app.frontend.localhost`)"
+       - "traefik.http.routers.site.rule=Host(`todo-app.localhost`)"
      container_name: todo-app-frontend
      depends_on:
        - api
-       - traeffik
+       - traefik
 
      networks:
        - todo-app-network
@@ -83,7 +83,20 @@ services:
     networks:
       - todo-app-network
 
-  traeffik:
+  mailpit:
+    image: 'axllent/mailpit:latest'
+    container_name: todo-app-mailpit
+    ports:
+        - '${FORWARD_MAILPIT_PORT:-1025}:1025'
+        - '${FORWARD_MAILPIT_DASHBOARD_PORT:-8025}:8025'
+    labels:
+       - "traefik.http.routers.mailpit.rule=(Host(`todo-app.mail.localhost`))"
+       - "traefik.http.services.mailpit.loadbalancer.server.port=8025"
+
+    networks:
+     - todo-app-network
+
+  traefik:
     image: traefik:v3.0
     container_name: todo-app-traefik
     restart: unless-stopped
