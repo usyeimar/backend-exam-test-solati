@@ -23,6 +23,7 @@ class TaskResource extends JsonResource
             'description' => $this->description,
             'completed' => $this->completed,
             'user' => new UserResource($this->user),
+            'attachments' => AttachmentResource::collection($this->attachments),
             'due_at' => DateHelper::getShortDate($this->due_at),
             'completed_at' => DateHelper::getTimestamp($this->completed_at),
             'created_at' => DateHelper::getTimestamp($this->created_at),

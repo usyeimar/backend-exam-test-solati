@@ -1,12 +1,12 @@
 <?php
 
-use App\Http\Controllers\API\Auth\EmailVerificationNotificationController;
-use App\Http\Controllers\API\Auth\LoginController;
-use App\Http\Controllers\API\Auth\LogoutController;
-use App\Http\Controllers\API\Auth\NewPasswordController;
-use App\Http\Controllers\API\Auth\PasswordResetLinkController;
-use App\Http\Controllers\API\Auth\RegisterUserController;
-use App\Http\Controllers\API\Auth\VerifyEmailController;
+use App\Http\Controllers\API\Authentication\EmailVerificationNotificationController;
+use App\Http\Controllers\API\Authentication\LoginController;
+use App\Http\Controllers\API\Authentication\LogoutController;
+use App\Http\Controllers\API\Authentication\NewPasswordController;
+use App\Http\Controllers\API\Authentication\PasswordResetLinkController;
+use App\Http\Controllers\API\Authentication\RegisterUserController;
+use App\Http\Controllers\API\Authentication\VerifyEmailController;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('auth')

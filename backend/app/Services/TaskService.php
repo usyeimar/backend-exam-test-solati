@@ -30,7 +30,7 @@ class TaskService
 
             ])
             ->allowedSorts(['title', 'completed', 'due_at'])
-            ->allowedIncludes(['user'])
+            ->allowedIncludes(['user', 'attachments'])
             ->paginate(
                 perPage: request()->get('limit', 50),
             );
@@ -54,9 +54,9 @@ class TaskService
         $this->isValidUuid($task_uuid, 'The task_uuid is not a valid UUID');
         // Get the task from the database
         $task = Task::query()->where('uuid', $task_uuid)->first();
-        if (! $task) {
+        if (!$task) {
             throw new Exception(
-                'No task found with the given UUID '.$task_uuid
+                'No task found with the given UUID ' . $task_uuid
             );
         }
 
@@ -104,9 +104,9 @@ class TaskService
         // Update the task in the database
         $task = Task::query()->where('uuid', $task_uuid)->first();
 
-        if (! $task) {
+        if (!$task) {
             throw new Exception(
-                'No task found with the given UUID'.$task_uuid
+                'No task found with the given UUID' . $task_uuid
             );
         }
 
@@ -140,9 +140,9 @@ class TaskService
         // Delete the task from the database
         $task = Task::query()->where('uuid', $task_uuid)->first();
 
-        if (! $task) {
+        if (!$task) {
             throw new Exception(
-                'No task found with the given UUID'.$task_uuid
+                'No task found with the given UUID' . $task_uuid
             );
         }
 
@@ -163,7 +163,7 @@ class TaskService
     private function isValidUuid(string $uuid, string $message = 'The UUID is not valid.'): void
     {
 
-        if (! preg_match('/^[a-f\d]{8}(-[a-f\d]{4}){4}[a-f\d]{8}$/i', $uuid)) {
+        if (!preg_match('/^[a-f\d]{8}(-[a-f\d]{4}){4}[a-f\d]{8}$/i', $uuid)) {
             throw new Exception($message);
         }
     }

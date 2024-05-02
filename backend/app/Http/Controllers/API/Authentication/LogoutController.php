@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\API\Auth;
+namespace App\Http\Controllers\API\Authentication;
 
 use App\Helpers\PassportRevokerHelper;
 use App\Http\Controllers\Controller;
