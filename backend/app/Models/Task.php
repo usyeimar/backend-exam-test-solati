@@ -99,4 +99,9 @@ class Task extends Model
             now()->endOfMonth()->toDateString(),
         ]);
     }
+
+    public function scopeCreatedAt($query, $date)
+    {
+        return $query->whereDate('created_at', $date);
+    }
 }

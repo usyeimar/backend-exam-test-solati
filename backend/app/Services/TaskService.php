@@ -21,12 +21,11 @@ class TaskService
         $tasks = QueryBuilder::for(Task::class)
             ->allowedFilters([
                 'title',
-                'completed',
                 'due_at',
+                'user_id',
+                AllowedFilter::scope('pending'),
                 AllowedFilter::exact('completed'),
-                AllowedFilter::scope('due_after'),
-                AllowedFilter::scope('due_before'),
-                AllowedFilter::scope('due_between'),
+
 
             ])
             ->allowedSorts(['title', 'completed', 'due_at'])
@@ -110,13 +109,14 @@ class TaskService
             );
         }
 
-        $task->fill([
+        $task->fill(array_filter([
             'title' => $data->title(),
-            'description' => $data->description() ?? $task->description,
-            'completed_at' => $data->completedAt() ?? $task->completed_at,
-            'due_at' => $data->dueAt() ?? $task->due_at,
-            'completed' => $data->completed() ?? $task->completed,
-        ]);
+            'description' => $data->description(),
+            'completed_at' => $data->completedAt(),
+            'due_at' => $data->dueAt(),
+            'completed' => $data->completed(),
+            'user_id' => $data->userId(),
+        ]));
 
         $task->save();
         $task->refresh();
