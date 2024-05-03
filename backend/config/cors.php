@@ -16,14 +16,10 @@ return [
     */
 
     'paths' => [
-        'api/*',
-        'auth/login',
-        'auth/logout',
-        'auth/register',
-        'login',
-        'logout',
-        'register',
-        'password/*',
+        'backend/*',
+        'oauth/*',
+        'sanctum/csrf-cookie',
+        'api/v1/auth/*',
         'graphql',
     ],
 

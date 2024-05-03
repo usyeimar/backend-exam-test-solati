@@ -12,8 +12,7 @@ use Illuminate\Foundation\Http\Kernel;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Hash;
-use Laravel\Passport\PersonalAccessTokenResult;
-use Symfony\Component\HttpFoundation\Request;
+use Illuminate\Support\Facades\Request;
 
 class AuthenticationService
 {
@@ -22,59 +21,55 @@ class AuthenticationService
      * Genera un token de acceso para el usuario.
      * @throws \Exception
      */
-    public function login(array $data): JsonResponse
+    public function login(array $data, bool $withGrantPassword = false): JsonResponse
     {
-        $token = auth()->attempt($data);
-
-        if (!$token) {
-            throw new Exception(
-                message: 'The provided credentials do not match our records.',
-            );
-        }
-
-        $user = User::query()->where('email', $data['email'])
+        $user = User::query()
+            ->where('email', $data['email'])
             ->first();
 
-        //validate if email is verified
-        if (!$user->hasVerifiedEmail()) {
-            return response()->json(CheckNullOrEmptyValues::check([
-                'success' => false,
-                'errors' => [
-                    [
-                        'title' => 'Email not verified',
-                        'detail' => 'Please verify your email address.',
-                    ],
+        if ($withGrantPassword) {
+            $token = $this->proxy(
+                $data + [
+                    'grantType' => 'password',
                 ]
-            ]), 401);
+            );
+
+        } else {
+            $isLogged = auth()->attempt($data);
+
+            if (!$isLogged) {
+                throw new Exception(
+                    message: 'The provided credentials do not match our records.',
+                );
+            }
+
+
+            $token = $user->createToken('auth_token');
+
+            $token = [
+                'access_token' => $token->accessToken,
+                'token_type' => 'Bearer',
+                'expires_at' => $token->token->expires_at->toDateTimeString(),
+                'expires_in' => $token->token->expires_at->getTimestamp(),
+            ];
         }
 
-        $token = $this->createNewToken($user);
 
         return response()->json(CheckNullOrEmptyValues::check([
             'success' => true,
             'message' => 'User authenticated successfully.',
             'data' => [
-                'id' => $user->id,
-                'object' => 'user',
-                'name' => $user->name,
-                'timezone' => $user->timezone,
-                'locale' => $user->locale,
-                'email' => $user->email,
-                'email_verified_at' => $user->email_verified_at,
+                ...UserResource::make($user)->resolve(),
                 'token' => [
-                    'value' => $token->accessToken,
-                    'expires_at' => now()->addSeconds($token->token->expires_at->getTimestamp())->toDateTimeString(),
-                    'expires_in' => now()->addSeconds($token->token->expires_at->getTimestamp())->getTimestamp(),
-                    'type' => 'Bearer',
+                    'value' => $token['access_token'],
+                    'refresh_value' => $token['refresh_token'] ?? null,
+                    'expires_at' => $token['expires_at'],
+                    'expires_in' => $token['expires_in'],
+                    'type' => $token['token_type'],
                 ],
 
             ],
         ]));
-    }
-
-    private function createNewToken(User $user): PersonalAccessTokenResult
-    {
-        return $user->createToken('auth_token');
     }
 
     /**
@@ -122,11 +117,13 @@ class AuthenticationService
             'scope' => '',
         ]));
 
+
         $data = json_decode($response->content());
+
 
         if ($response->status() !== 200) {
             throw new Exception(
-                message: 'Hubo un error al autenticar al usuario con las credenciales proporcionadas (' . $data->message . ').',
+                message: 'There was an error authenticating the user with the provided credentials (' . $data->message . ').',
             );
         }
 
@@ -135,6 +132,7 @@ class AuthenticationService
             'refresh_token' => $data->refresh_token,
             'token_type' => $data->token_type,
             'expires_in' => $data->expires_in,
+            'expires_at' => now()->addSeconds($data->expires_in)->toDateTimeString(),
         ];
     }
 

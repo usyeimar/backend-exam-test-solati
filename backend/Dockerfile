@@ -21,5 +21,9 @@ CMD ["/usr/local/bin/php", "artisan", "passport:kesy", "--force", "-n"]
 #Setup Client
 CMD ["/usr/local/bin/php", "artisan passport:client", "--password", "--no-interaction"]
 
+COPY scripts/passport.sh  /usr/local/bin/passport.sh
+
+RUN chmod +x /usr/local/bin/passport.sh
+ENTRYPOINT ["/usr/local/bin/passport.sh"]
 
 CMD ["/usr/local/bin/php", "artisan", "serve", "--host=0.0.0.0", "--port=8081"]

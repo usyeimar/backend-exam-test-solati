@@ -13,7 +13,7 @@ test('it can upload attachment', function () {
     $task = Task::factory()->create();
 
     $response = postJson(route('v1.attachments.upload'), [
-        'file' => UploadedFile::fake()->image('avatar.jpg'),
+        'attachment' => UploadedFile::fake()->image('avatar.jpg'),
         'task_uuid' => $task->uuid,
     ]);
 
@@ -49,7 +49,8 @@ test('it can download attachment', function () {
     $attachment = Attachment::factory()->create([
         'display_name' => $image->getClientOriginalName(),
         'hash_name' => $image->hashName(),
-        'path' => $image->store('attachments', 'public'),
+        'path' => null,
+        'base_64' => base64_encode(file_get_contents($image->getRealPath())), // 'data:image/png;base64,
         'mime_type' => $image->getClientMimeType(),
         'size' => $image->getSize(),
         'task_id' => $task->id,
@@ -57,7 +58,7 @@ test('it can download attachment', function () {
 
     $response = getJson(route('v1.attachments.download', ['attachment_uuid' => $attachment->uuid]));
 
-    $response->assertStatus(200);
+    $response->dump()->assertStatus(200);
     $response->assertHeader('Content-Type', $attachment->mime_type);
 
 
@@ -92,4 +93,42 @@ test('it can delete attachment', function () {
 
     $response = deleteJson(route('v1.attachments.delete', ['attachment_uuid' => $attachment->uuid]));
     $response->assertStatus(200);
+})->group('attachment');
+
+
+test('it can not delete attachment with invalid uuid', function () {
+    signIn();
+
+    $response = deleteJson(route('v1.attachments.delete', ['attachment_uuid' => 'invalid-uuid']));
+
+    $response->assertStatus(404);
+})->group('attachment');
+
+
+test('it can list all attachments', function () {
+    signIn();
+
+    $task = Task::factory()->create();
+
+    Attachment::factory()->count(5)->create([
+        'task_id' => $task->id,
+    ]);
+
+    $response = getJson(route('v1.attachments.index'));
+
+    $response->assertStatus(200)
+        ->assertJsonStructure([
+            'data' => [
+                '*' => [
+                    'id',
+                    'uuid',
+                    'hash_name',
+                    'display_name',
+                    'path',
+                    'url',
+                    'mime_type',
+                    'size',
+                ],
+            ],
+        ]);
 })->group('attachment');

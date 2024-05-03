@@ -2,10 +2,10 @@
 
 namespace App\Models;
 
+use Exception;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
 class Attachment extends Model
@@ -55,6 +55,23 @@ class Attachment extends Model
      */
     public function url(): string
     {
-        return Storage::url($this->path);
+        return route('v1.attachments.download', $this->uuid);
+    }
+
+    /**
+     * Tipo de archivo
+     * @return string
+     * @throws Exception
+     */
+    public function type(): string
+    {
+        return match (trim(Str::of($this->display_name)->after('.'))) {
+            'jpg', 'jpeg', 'png', 'gif' => 'image',
+            'mp3', 'wav', 'ogg', 'm4a' => 'audio',
+            'mp4', 'mov', 'avi', 'mkv' => 'video',
+            'pdf', 'doc', 'docx', 'xls', 'xlsx', 'ppt', 'pptx' => 'document',
+            'zip', 'rar', 'tar', 'gz' => 'compressed',
+            default => 'file',
+        };
     }
 }

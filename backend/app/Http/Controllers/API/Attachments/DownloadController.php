@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\API\Attachments;
 
+use App\Helpers\HttpHelper;
 use App\Http\Controllers\Controller;
 use App\Services\AttachmentService;
 use Illuminate\Http\JsonResponse;
@@ -14,7 +15,7 @@ class DownloadController extends Controller
     /**
      * Handle the incoming request.
      */
-    public function __invoke(string $attachment_uuid, AttachmentService $service): BinaryFileResponse | JsonResponse
+    public function __invoke(string $attachment_uuid, AttachmentService $service): \Illuminate\Http\Response|JsonResponse|BinaryFileResponse
     {
         try {
             return $service->download($attachment_uuid);
@@ -27,7 +28,7 @@ class DownloadController extends Controller
                         'detail' => $e->getMessage(),
                     ],
                 ],
-            ], 400);
+            ], HttpHelper::checkCode($e->getCode()) ? $e->getCode() : 400);
         }
     }
 }

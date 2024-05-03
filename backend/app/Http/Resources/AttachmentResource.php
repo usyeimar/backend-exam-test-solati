@@ -19,6 +19,7 @@ class AttachmentResource extends JsonResource
             'uuid' => $this->uuid,
             'object' => 'attachment',
             'url' => $this->url(),
+            'type' => $this->type(),
             'display_name' => $this->display_name,
             'hash_name' => $this->hash_name,
             'path' => $this->path,

@@ -96,17 +96,6 @@ return Application::configure(basePath: dirname(__DIR__))
         });
 
         $exceptions->render(function (QueryException $e) {
-
-
-            //if is a database error, run migrations
-            //php artisan migrate
-            Artisan::call('migrate --seed');
-            shell_exec('php artisan api-passport:install --personal');
-
-
-
-
-
             return response()->json([
                 'success' => false,
                 'errors' => [

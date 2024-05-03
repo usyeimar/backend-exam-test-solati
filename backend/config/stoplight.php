@@ -29,7 +29,7 @@ return [
     | OpenAPI Specification
     |--------------------------------------------------------------------------
     |
-    | Provide a link to your local or cloud based open api specification.
+    | Provide a link to your local or cloud based open backend specification.
     |
     */
     'openapi' => [

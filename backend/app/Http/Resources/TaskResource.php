@@ -18,7 +18,7 @@ class TaskResource extends JsonResource
         return CheckNullOrEmptyValues::check([
             'id' => $this->id,
             'uuid' => $this->uuid,
-            'type' => 'task',
+            'object' => 'task',
             'title' => $this->title,
             'description' => $this->description,
             'completed' => $this->completed,

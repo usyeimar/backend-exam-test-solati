@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\API\Attachments;
 
+use App\Helpers\HttpHelper;
 use App\Http\Controllers\Controller;
 use App\Services\AttachmentService;
 use Illuminate\Http\Request;
@@ -31,7 +32,7 @@ class DestroyController extends Controller
                         'detail' => $e->getMessage(),
                     ],
                 ],
-            ], 400);
+            ], HttpHelper::checkCode($e->getCode()) ? $e->getCode() : 400);
         }
     }
 }

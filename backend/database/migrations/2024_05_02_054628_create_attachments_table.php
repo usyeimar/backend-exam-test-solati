@@ -15,7 +15,9 @@ return new class extends Migration {
             $table->uuid()->unique()->comment('Identificador único del archivo');
             $table->string('display_name')->comment('Nombre del archivo');
             $table->string('hash_name')->comment('Nombre del archivo encriptado');
-            $table->string('path')->comment('Ruta del archivo');
+            $table->string('path')->nullable()->comment('Ruta del archivo');
+            $table->longText('base_64')->nullable()->comment('Archivo en base64');
+            $table->binary('binary')->nullable()->comment('Archivo en binario');
             $table->string('mime_type')->comment('Tipo MIME del archivo');
             $table->unsignedBigInteger('size')->comment('Tamaño del archivo en bytes');
             $table->foreignId('task_id')

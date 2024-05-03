@@ -16,9 +16,10 @@ class AttachmentFactory extends Factory
      */
     public function definition(): array
     {
+        $ext = ['jpg', 'png', 'pdf', 'docx', 'xlsx', 'pptx', 'txt', 'zip', 'rar', 'mp3', 'mp4'];
         return [
             'uuid' => $this->faker->uuid,
-            'display_name' => $this->faker->word,
+            'display_name' => $this->faker->word . '.' . rand(0, 1) ? $ext[rand(0, count($ext) - 1)] : 'txt',
             'hash_name' => $this->faker->word,
             'path' => $this->faker->word,
             'mime_type' => $this->faker->word,

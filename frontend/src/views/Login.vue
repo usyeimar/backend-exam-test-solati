@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { FwbButton } from 'flowbite-vue'
 import http from '@/services/http'
 import { object, string } from 'yup'
 import { ErrorMessage, Field, Form, useForm, useField } from 'vee-validate'
@@ -20,6 +19,8 @@ const formSchema = object({
   password: string().required('La contraseña es requerida').label('Contraseña')
 })
 
+
+
 const { errors: errorTest, handleSubmit } = useForm({
   validationSchema: formSchema,
   initialValues: {
@@ -34,7 +35,7 @@ const onSubmit = handleSubmit(async (values) => {
   isLoading.value = true
   try {
     await http
-      .post('/v1/auth/login', {
+      .post('/api/v1/auth/login', {
         email: values.email,
         password: values.password
       })
@@ -64,11 +65,11 @@ const onSubmit = handleSubmit(async (values) => {
 </script>
 <template>
   <div
-    class="flex flex-col items-center justify-center px-6 pt-8 mx-auto md:h-screen pt:mt-0 dark:bg-gray-900"
+    class="flex flex-col bg-slate-100 items-center justify-center px-6 pt-8 mx-auto md:h-screen pt:mt-0 dark:bg-gray-900"
   >
     <!-- Card -->
     <div
-      class="w-full max-w-xl p-x10 py-20 p-6 space-y-8 sm:p-8 bg-white rounded-3xl boreder-2 shadow dark:bg-gray-800"
+      class="w-full max-w-md p-x10 py-20 p-6 space-y-8 sm:p-8 bg-white rounded-3xl border shadow dark:bg-gray-800"
     >
       <h1 class="text-5xl text-center font-bold text-gray-900 dark:text-white">
         Bienvenido

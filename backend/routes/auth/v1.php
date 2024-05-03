@@ -13,12 +13,14 @@ Route::prefix('auth')
     ->as('auth.')
     ->group(function () {
         Route::post('/register', RegisterUserController::class)->middleware('guest')->name('register');
-        Route::post('/login', LoginController::class)->name('login');
+        Route::post('/login', LoginController::class)
+            ->middleware('guest')
+            ->name('login');
         Route::post('/forgot-password', [PasswordResetLinkController::class, 'store'])->middleware('guest')->name('password.email');
         Route::post('/reset-password', [NewPasswordController::class, 'store'])->middleware('guest')->name('password.store');
-        Route::get('/verify-email/{id}/{hash}', VerifyEmailController::class)->middleware(['auth', 'signed', 'throttle:6,1'])->name('verification.verify');
+        Route::get('/verify-email/{id}/{hash}', VerifyEmailController::class)->middleware(['signed', 'throttle:6,1'])->name('verification.verify');
         Route::post('/email/verification-notification', [EmailVerificationNotificationController::class, 'store'])->middleware(['auth', 'throttle:6,1'])->name('verification.send');
-        Route::post('/logout', LogoutController::class)->middleware('auth:api')->name('logout');
+        Route::post('/logout', LogoutController::class)->middleware('auth:backend')->name('logout');
     });
 
 Route::prefix('oauth')
@@ -37,7 +39,7 @@ Route::prefix('oauth')
             'middleware' => 'web',
         ]);
 
-        Route::middleware(['auth:api'])->group(function () {
+        Route::middleware(['auth:backend'])->group(function () {
             Route::post('/token/refresh', [
                 'uses' => 'TransientTokenController@refresh',
                 'as' => 'token.refresh',

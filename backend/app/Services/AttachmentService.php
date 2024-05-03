@@ -7,33 +7,25 @@ use App\Http\Resources\AttachmentResource;
 use App\Models\Attachment;
 use App\Models\Task;
 use Exception;
+use Illuminate\Http\Response;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
+use Spatie\QueryBuilder\QueryBuilder;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 class AttachmentService
 {
     public function index()
     {
-        return response()->json([
+        $attachments = QueryBuilder::for(Attachment::class)
+            ->allowedFilters(['display_name', 'mime_type'])
+            ->allowedSorts(['id', 'display_name', 'mime_type', 'size'])
+            ->paginate();
+
+        return MapperResponseDto::create([
             'success' => true,
-            'data' => [
-                [
-                    'id' => 1,
-                    'name' => 'Archivo 1',
-                    'url' => 'https://www.google.com',
-                ],
-                [
-                    'id' => 2,
-                    'name' => 'Archivo 2',
-                    'url' => 'https://www.google.com',
-                ],
-                [
-                    'id' => 3,
-                    'name' => 'Archivo 3',
-                    'url' => 'https://www.google.com',
-                ],
-            ],
+            'message' => 'Attachments fetched successfully',
+            'data' => AttachmentResource::collection($attachments)->resolve(),
         ]);
     }
 
@@ -61,23 +53,21 @@ class AttachmentService
 
         if (!$attachment) {
             throw new Exception(
-                message: 'No attachment found with the given UUID ' . $attachment_uuid
+                message: 'No attachment found with the given UUID ' . $attachment_uuid,
+                code: 404
             );
         }
 
-        return response()->download(
-            file: Storage::disk('public')->path($attachment->path),
-            name: $attachment->display_name,
-            headers: [
-                'Content-Type' => $attachment->mime_type,
-            ]
-        );
+        return response()->download(Storage::path('attachments/' . $attachment->hash_name), $attachment->display_name);
     }
 
     /**
+     * Cargar archivo
+     * @param UploadedFile $file
+     * @return MapperResponseDto
      * @throws Exception
      */
-    public function upload(?UploadedFile $file)
+    public function upload(UploadedFile $file): MapperResponseDto
     {
         $task_uuid = request('task_uuid');
 
@@ -85,20 +75,23 @@ class AttachmentService
             $task = Task::query()->where('uuid', $task_uuid)->first();
             if (!$task) {
                 throw new Exception(
-                    message: 'No task found with the given UUID ' . $task_uuid
+                    message: 'No task found with the given UUID ' . $task_uuid,
+                    code: 404
                 );
             }
         }
 
+        $file->store('attachments');
         $attachment = Attachment::query()->create([
             'display_name' => $file->getClientOriginalName(),
             'hash_name' => $file->hashName(),
-            'path' => $file->store('attachments'),
+            'path' => Storage::path('attachments/' . $file->hashName()),
             'mime_type' => $file->getClientMimeType(),
             'size' => $file->getSize(),
             'task_id' => $task->id ?? null,
             'user_id' => auth()->id(),
         ]);
+
 
         return MapperResponseDto::create([
             'success' => true,
@@ -108,6 +101,7 @@ class AttachmentService
     }
 
     /**
+     * Eliminar archivo
      * @throws Exception
      */
     public function delete(string $attachment_uuid)
@@ -116,11 +110,12 @@ class AttachmentService
 
         if (!$attachment) {
             throw new Exception(
-                message: 'No attachment found with the given UUID ' . $attachment_uuid
+                message: 'No attachment found with the given UUID ' . $attachment_uuid,
+                code: 404
             );
         }
 
-        Storage::disk('public')->delete($attachment->path);
+        Storage::delete($attachment->path);
         $attachment->delete();
 
 

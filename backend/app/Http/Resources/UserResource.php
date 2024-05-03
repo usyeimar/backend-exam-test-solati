@@ -15,7 +15,7 @@ class UserResource extends JsonResource
         return [
             'id' => $this->id,
             'uuid' => $this->uuid, // 'uuid' is a custom attribute
-            'type' => 'user', // 'type' => 'user' is a JSON:API convention
+            'object' => 'user', //
             'name' => $this->name,
             'email' => $this->email,
             'confirmed' => $this->email_verified_at !== null,

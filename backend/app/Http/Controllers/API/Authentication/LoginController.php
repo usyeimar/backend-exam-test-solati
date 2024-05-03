@@ -22,7 +22,7 @@ class LoginController extends Controller
     {
 
         try {
-            return $service->login($request->validated());
+            return $service->login($request->validated(), true);
         } catch (Exception $e) {
             if ($e instanceof QueryException) {
                 throw $e;
