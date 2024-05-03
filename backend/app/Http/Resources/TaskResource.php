@@ -18,11 +18,12 @@ class TaskResource extends JsonResource
         return CheckNullOrEmptyValues::check([
             'id' => $this->id,
             'uuid' => $this->uuid,
-            'type' => 'task',
+            'object' => 'task',
             'title' => $this->title,
             'description' => $this->description,
             'completed' => $this->completed,
             'user' => new UserResource($this->user),
+            'attachments' => AttachmentResource::collection($this->attachments),
             'due_at' => DateHelper::getShortDate($this->due_at),
             'completed_at' => DateHelper::getTimestamp($this->completed_at),
             'created_at' => DateHelper::getTimestamp($this->created_at),

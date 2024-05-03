@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Attachment;
 use App\Models\Task;
 
 use function Pest\Laravel\deleteJson;
@@ -88,7 +89,13 @@ test('it can delete task', function () {
 test('it can list tasks', function () {
     signIn();
 
-    Task::factory()->count(5)->create();
+    Task::factory()->count(5)->create()
+        ->each(function (Task $task) {
+            Attachment::factory()->create([
+                'task_id' => $task->id,
+            ]);
+        });
+
     $response = getJson(route('v1.tasks.index'));
 
     $response->assertStatus(200)
@@ -103,6 +110,7 @@ test('it can list tasks', function () {
                     'completed_at',
                     'due_at',
                     'user',
+                    'attachments',
                     'created_at',
                     'updated_at',
                 ],

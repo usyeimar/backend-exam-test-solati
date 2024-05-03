@@ -39,7 +39,7 @@ readonly class MapperResponseDto
         return new self(
             success: $data['success'],
             message: $data['message'],
-            data: $data['data'],
+            data: $data['data'] ?? [],
             errors: $data['errors'] ?? []
         );
     }

@@ -15,7 +15,7 @@ class PassportInstall extends Command
      *
      * @var string
      */
-    protected $signature = 'api-passport:install
+    protected $signature = 'backend-passport:install
             {--personal : Create a personal access token client}
             {--password : Create a password grant client}
             {--client : Create a client credentials grant client}
@@ -59,7 +59,7 @@ class PassportInstall extends Command
     {
         $name = $this->option('name') ?: $this->ask(
             'What should we name the personal access client?',
-            config('app.name').' Personal Access Client'
+            config('app.name') . ' Personal Access Client'
         );
 
         $client = $clients->createPersonalAccessClient(
@@ -82,7 +82,7 @@ class PassportInstall extends Command
     {
         $name = $this->option('name') ?: $this->ask(
             'What should we name the password grant client?',
-            config('app.name').' Password Grant Client'
+            config('app.name') . ' Password Grant Client'
         );
 
         $providers = array_keys(config('auth.providers'));
@@ -114,7 +114,7 @@ class PassportInstall extends Command
     {
         $name = $this->option('name') ?: $this->ask(
             'What should we name the client?',
-            config('app.name').' ClientCredentials Grant Client'
+            config('app.name') . ' ClientCredentials Grant Client'
         );
 
         $client = $clients->create(
@@ -131,7 +131,7 @@ class PassportInstall extends Command
     /**
      * Create a authorization code client.
      *
-     * @return void
+     * @return int
      */
     protected function createAuthCodeClient(ClientRepository $clients)
     {
@@ -155,12 +155,14 @@ class PassportInstall extends Command
             null,
             false,
             false,
-            ! $this->option('public')
+            !$this->option('public')
         );
 
         $this->info('New client created successfully.');
 
         $this->outputClientDetails($client);
+
+        return 0;
     }
 
     /**
@@ -175,8 +177,8 @@ class PassportInstall extends Command
             $this->line('');
         }
 
-        $this->line('<comment>Client ID:</comment> '.$client->getKey());
-        $this->line('<comment>Client secret:</comment> '.$client->plainSecret);
+        $this->line('<comment>Client ID:</comment> ' . $client->getKey());
+        $this->line('<comment>Client secret:</comment> ' . $client->plainSecret);
 
         if (file_exists($path = $this->envPath()) === false) {
             return;
@@ -194,14 +196,14 @@ class PassportInstall extends Command
         };
 
         if (Str::contains(file_get_contents($path), [
-            $envNames[0],
-            $envNames[1],
-        ]) === false) {
+                $envNames[0],
+                $envNames[1],
+            ]) === false) {
 
             //Set new env values
             file_put_contents(
                 $path,
-                PHP_EOL.$envNames[0].$client->getKey().PHP_EOL.$envNames[1].$client->plainSecret.PHP_EOL,
+                PHP_EOL . $envNames[0] . $client->getKey() . PHP_EOL . $envNames[1] . $client->plainSecret . PHP_EOL,
                 FILE_APPEND
             );
 
@@ -220,8 +222,8 @@ class PassportInstall extends Command
             file_put_contents(
                 $path,
                 str_replace(
-                    $envNames[0].$this->laravel['config'][$config[0]],
-                    $envNames[0].$client->getKey(),
+                    $envNames[0] . $this->laravel['config'][$config[0]],
+                    $envNames[0] . $client->getKey(),
                     file_get_contents($path)
                 )
             );
@@ -229,12 +231,13 @@ class PassportInstall extends Command
             file_put_contents(
                 $path,
                 str_replace(
-                    $envNames[1].$this->laravel['config'][$config[1]],
-                    $envNames[1].$client->plainSecret,
+                    $envNames[1] . $this->laravel['config'][$config[1]],
+                    $envNames[1] . $client->plainSecret,
                     file_get_contents($path)
                 )
             );
         }
+
 
     }
 
@@ -246,7 +249,7 @@ class PassportInstall extends Command
 
         // check if laravel version Less than 5.4.17
         if (version_compare($this->laravel->version(), '5.4.17', '<')) {
-            return $this->laravel->basePath().DIRECTORY_SEPARATOR.'.env';
+            return $this->laravel->basePath() . DIRECTORY_SEPARATOR . '.env';
         }
 
         return $this->laravel->basePath('.env');

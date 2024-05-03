@@ -42,8 +42,9 @@ docker-compose up -d
 Utilizando los valores proporcionados de forma predeterminada, ahora deberían estar disponibles dos sitios en el
 navegador.
 
-- [todo-app.fronted.localhost](http://todo-app.frontend.localhost/): The JavaScript (Vue) app
-- [todo-app.api.localhost](http://todo-app.api.localhost): The PHP (Laravel) app
+- [todo-app.localhost](http://todo-app.localhost): The JavaScript (Vue) app
+- [todo-app.localhost/api](http://todo-app.localhost/api): The PHP (Laravel) app
+- [todo-app.mail.localhost](http://todo-app.mail.localhost): The Mail(Mailpit) dashboard
 
 # Referencia a la API
 

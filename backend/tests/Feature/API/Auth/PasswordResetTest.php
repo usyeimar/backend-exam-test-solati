@@ -10,7 +10,7 @@ test('reset password link can be requested', function () {
 
     $user = User::factory()->create();
 
-    $response = postJson('/api/v1/forgot-password', ['email' => $user->email]);
+    $response = postJson('/api/v1/auth/forgot-password', ['email' => $user->email]);
 
     $response
         ->assertSessionHasNoErrors()
@@ -18,7 +18,7 @@ test('reset password link can be requested', function () {
 
 
 //    Notification::assertSentTo($user, ResetPassword::class);
-})->skip('Notification::assertSentTo is not working');
+});
 
 test('password can be reset with valid token', function () {
     Notification::fake();

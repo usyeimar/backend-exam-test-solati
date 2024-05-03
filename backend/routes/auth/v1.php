@@ -1,24 +1,26 @@
 <?php
 
-use App\Http\Controllers\API\Auth\EmailVerificationNotificationController;
-use App\Http\Controllers\API\Auth\LoginController;
-use App\Http\Controllers\API\Auth\LogoutController;
-use App\Http\Controllers\API\Auth\NewPasswordController;
-use App\Http\Controllers\API\Auth\PasswordResetLinkController;
-use App\Http\Controllers\API\Auth\RegisterUserController;
-use App\Http\Controllers\API\Auth\VerifyEmailController;
+use App\Http\Controllers\API\Authentication\EmailVerificationNotificationController;
+use App\Http\Controllers\API\Authentication\LoginController;
+use App\Http\Controllers\API\Authentication\LogoutController;
+use App\Http\Controllers\API\Authentication\NewPasswordController;
+use App\Http\Controllers\API\Authentication\PasswordResetLinkController;
+use App\Http\Controllers\API\Authentication\RegisterUserController;
+use App\Http\Controllers\API\Authentication\VerifyEmailController;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('auth')
     ->as('auth.')
     ->group(function () {
         Route::post('/register', RegisterUserController::class)->middleware('guest')->name('register');
-        Route::post('/login', LoginController::class)->name('login');
+        Route::post('/login', LoginController::class)
+            ->middleware('guest')
+            ->name('login');
         Route::post('/forgot-password', [PasswordResetLinkController::class, 'store'])->middleware('guest')->name('password.email');
         Route::post('/reset-password', [NewPasswordController::class, 'store'])->middleware('guest')->name('password.store');
-        Route::get('/verify-email/{id}/{hash}', VerifyEmailController::class)->middleware(['auth', 'signed', 'throttle:6,1'])->name('verification.verify');
+        Route::get('/verify-email/{id}/{hash}', VerifyEmailController::class)->middleware(['signed', 'throttle:6,1'])->name('verification.verify');
         Route::post('/email/verification-notification', [EmailVerificationNotificationController::class, 'store'])->middleware(['auth', 'throttle:6,1'])->name('verification.send');
-        Route::post('/logout', LogoutController::class)->middleware('auth:api')->name('logout');
+        Route::post('/logout', LogoutController::class)->middleware('auth:backend')->name('logout');
     });
 
 Route::prefix('oauth')
@@ -37,7 +39,7 @@ Route::prefix('oauth')
             'middleware' => 'web',
         ]);
 
-        Route::middleware(['auth:api'])->group(function () {
+        Route::middleware(['auth:backend'])->group(function () {
             Route::post('/token/refresh', [
                 'uses' => 'TransientTokenController@refresh',
                 'as' => 'token.refresh',

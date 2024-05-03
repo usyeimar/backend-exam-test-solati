@@ -10,15 +10,20 @@ export default defineConfig({
   plugins: [
     vue(),
     vueJsx(),
-    VueDevTools(),
+    VueDevTools()
   ],
   resolve: {
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url))
     }
   },
-  server:{
-    host: '0.0.0.0',
-    port: 8082
+  server: {
+    port: 8082,
+    strictPort: true,
+    host: true,
+    origin: 'http://0.0.0.0:8082',
+    watch: {
+      usePolling: true
+    }
   }
 })
