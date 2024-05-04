@@ -82,7 +82,7 @@ const toggleTask = async (id: string) => {
   const isCompleted = !tasks.value[index].completed
   tasks.value[index].completed = isCompleted
   await api.toggleTask(id, isCompleted).then(() => {
-    toast('Task completed', { type: 'success', delay: 100, autoClose: true })
+    toast('Task status  changed', { type: 'success', delay: 100, autoClose: true })
   }).catch((error) => {
     console.log('Error', error)
   })
