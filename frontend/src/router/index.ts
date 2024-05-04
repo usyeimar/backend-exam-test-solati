@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
+
 const authGuard = async (to: any, from: any, next: any) => {
   const unProtectedRoutes = ['/login']
 
@@ -21,13 +22,19 @@ const router = createRouter({
     {
       path: '/',
       name: 'home',
-      redirect: '/task',
+      redirect(to) {
+        return { name: 'dashboard' }
+      }
     },
     {
-      path:'/task',
-      name: 'task',
-      component: import('../views/Task.vue'),
+      path: '/dashboard',
+      name: 'dashboard',
+      component: import('../views/Dashboard.vue'),
       beforeEnter: authGuard
+    }, {
+      path: '/tasks/:id',
+      name: 'task-detail',
+      component: import('../views/TaskDetail.vue')
     },
     {
       path: '/login',
@@ -35,9 +42,14 @@ const router = createRouter({
       component: () => import('../views/Login.vue')
     },
     {
-      path:'/register',
+      path: '/register',
       name: 'register',
       component: () => import('../views/Register.vue')
+    },
+    {
+      'path': '/verify-email',
+      name: 'verify-email',
+      component: () => import('../views/VerifyEmail.vue')
     }
   ]
 })

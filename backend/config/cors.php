@@ -16,7 +16,7 @@ return [
     */
 
     'paths' => [
-        'backend/*',
+        'api/*',
         'oauth/*',
         'sanctum/csrf-cookie',
         'api/v1/auth/*',

@@ -12,7 +12,7 @@ services:
       POSTGRES_DB: tasks_db
     tty: true
     healthcheck:
-      test: [ "CMD-SHELL", "pg_isready -U postgres" ]
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -31,21 +31,21 @@ services:
     networks:
       - todo-app-network
   minio:
-    image: 'minio/minio:latest'
+    image: "minio/minio:latest"
     container_name: todo-app-minio
     ports:
-      - '9000:9000'
-      - '9001:9001'
+      - "9000:9000"
+      - "9001:9001"
     networks:
       - todo-app-network
     volumes:
-      - '.data/minio:/data'
+      - ".data/minio:/data"
     environment:
-      MINIO_ROOT_USER: 'minio'
-      MINIO_ROOT_PASSWORD: 'uikui5choRith0ZieV2zohN5aish5r'
+      MINIO_ROOT_USER: "minio"
+      MINIO_ROOT_PASSWORD: "uikui5choRith0ZieV2zohN5aish5r"
     command: minio server /data/minio --console-address ":9001"
     healthcheck:
-      test: [ "CMD", "curl", "-f", "http://localhost:9000/minio/health/live" ]
+      test: ["CMD", "curl", "-f", "http://localhost:9000/minio/health/live"]
       retries: 3
       timeout: 5s
 
@@ -70,27 +70,27 @@ services:
     networks:
       - todo-app-network
 
-  #  frontend:
-  #    build:
-  #      context: ./frontend
-  #      dockerfile: Dockerfile
-  #    ports:
-  #      - "8082:8082"
-  #    restart: unless-stopped
-  #    tty: true
-  #    labels:
-  #      - "traefik.http.routers.site.rule=Host(`todo-app.localhost`)"
-  #    container_name: todo-app-frontend
-  #    depends_on:
-  #      - api
-  #      - traefik
-  #
-  #    networks:
-  #      - todo-app-network
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - "8082:8082"
+    restart: unless-stopped
+    tty: true
+    labels:
+      - "traefik.http.routers.site.rule=Host(`todo-app.localhost`)"
+    container_name: todo-app-frontend
+    depends_on:
+      - api
+      - traefik
+
+    networks:
+      - todo-app-network
 
   nginx:
     depends_on:
-      #      - frontend
+      - frontend
       - api
     image: nginx:alpine
     container_name: todo-app-nginx
@@ -103,11 +103,11 @@ services:
       - todo-app-network
 
   mailpit:
-    image: 'axllent/mailpit:latest'
+    image: "axllent/mailpit:latest"
     container_name: todo-app-mailpit
     ports:
-      - '${FORWARD_MAILPIT_PORT:-1025}:1025'
-      - '${FORWARD_MAILPIT_DASHBOARD_PORT:-8025}:8025'
+      - "${FORWARD_MAILPIT_PORT:-1025}:1025"
+      - "${FORWARD_MAILPIT_DASHBOARD_PORT:-8025}:8025"
     labels:
       - "traefik.http.routers.mailpit.rule=(Host(`todo-app.mail.localhost`))"
       - "traefik.http.services.mailpit.loadbalancer.server.port=8025"

@@ -45,6 +45,9 @@ importers:
       '@tsconfig/node20':
         specifier: ^20.1.4
         version: 20.1.4
+      '@types/file-saver':
+        specifier: ^2.0.7
+        version: 2.0.7
       '@types/jsdom':
         specifier: ^21.1.6
         version: 21.1.6
@@ -78,6 +81,9 @@ importers:
       eslint-plugin-vue:
         specifier: ^9.23.0
         version: 9.25.0(eslint@8.57.0)
+      file-saver:
+        specifier: ^2.0.5
+        version: 2.0.5
       jsdom:
         specifier: ^24.0.0
         version: 24.0.0
@@ -622,6 +628,9 @@ packages:
 
   '@types/estree@1.0.5':
     resolution: {integrity: sha512-/kYRxGDLWzHOB7q+wtSUQlFrtcdUccpfy+X+9iMBpHK8QLLhx2wIPYuS5DYtR9Wa/YlZAbIovy7qVdB1Aq6Lyw==}
+
+  '@types/file-saver@2.0.7':
+    resolution: {integrity: sha512-dNKVfHd/jk0SkR/exKGj2ggkB45MAkzvWCaqLUUgkyjITkGNzH8H+yUwr+BLJUBjZOe9w8X3wgmXhZDRg1ED6A==}
 
   '@types/jsdom@21.1.6':
     resolution: {integrity: sha512-/7kkMsC+/kMs7gAYmmBR9P0vGTnOoLhQhyhQJSlXGI5bzTHp6xdo0TtKWQAsz6pmSAeVqKSbqeyP6hytqr9FDw==}
@@ -1239,6 +1248,9 @@ packages:
   file-entry-cache@6.0.1:
     resolution: {integrity: sha512-7Gps/XWymbLk2QLYK4NzpMOrYjMhdIxXuIvy2QBsLE6ljuodKvdkWs/cpyJJ3CVIVpH0Oi1Hvg1ovbMzLdFBBg==}
     engines: {node: ^10.12.0 || >=12.0.0}
+
+  file-saver@2.0.5:
+    resolution: {integrity: sha512-P9bmyZ3h/PRG+Nzga+rbdI4OEpNDzAVyy74uVO9ATgzLK6VtAsYybF/+TOCvrc0MO793d6+42lLyZTw7/ArVzA==}
 
   fill-range@7.0.1:
     resolution: {integrity: sha512-qOo9F+dMUmC2Lcb4BbVvnKJxTPjCm+RRpe4gDuGrzkL7mEVl/djYSu2OdQ2Pa302N4oqkSg9ir6jaLWJ2USVpQ==}
@@ -2869,6 +2881,8 @@ snapshots:
 
   '@types/estree@1.0.5': {}
 
+  '@types/file-saver@2.0.7': {}
+
   '@types/jsdom@21.1.6':
     dependencies:
       '@types/node': 20.12.7
@@ -3188,7 +3202,7 @@ snapshots:
       '@vueuse/shared': 9.3.0(vue@3.4.26(typescript@5.4.5))
       vue-demi: 0.14.7(vue@3.4.26(typescript@5.4.5))
     transitivePeerDependencies:
-      - '@vue/composition-backend'
+      - '@vue/composition-api'
       - vue
 
   '@vueuse/metadata@9.3.0': {}
@@ -3197,7 +3211,7 @@ snapshots:
     dependencies:
       vue-demi: 0.14.7(vue@3.4.26(typescript@5.4.5))
     transitivePeerDependencies:
-      - '@vue/composition-backend'
+      - '@vue/composition-api'
       - vue
 
   abbrev@2.0.0: {}
@@ -3632,6 +3646,8 @@ snapshots:
     dependencies:
       flat-cache: 3.2.0
 
+  file-saver@2.0.5: {}
+
   fill-range@7.0.1:
     dependencies:
       to-regex-range: 5.0.1
@@ -3668,7 +3684,7 @@ snapshots:
       vue: 3.4.26(typescript@5.4.5)
     transitivePeerDependencies:
       - '@nuxt/kit'
-      - '@vue/composition-backend'
+      - '@vue/composition-api'
 
   flowbite@1.5.4:
     dependencies:

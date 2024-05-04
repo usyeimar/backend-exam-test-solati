@@ -20,7 +20,6 @@ const formSchema = object({
 })
 
 
-
 const { errors: errorTest, handleSubmit } = useForm({
   validationSchema: formSchema,
   initialValues: {
@@ -42,12 +41,7 @@ const onSubmit = handleSubmit(async (values) => {
       .then(({ data }) => {
         isLoading.value = false
         localStorage.setItem('token', JSON.stringify(data.data.token))
-        toast.success('Bienvenido', {
-          duration: 2000
-        })
-        setTimeout(() => {
-          router.push({ name: 'home' })
-        }, 1000)
+        router.push({ name: 'dashboard' }) // Redirect to Home
       })
   } catch (error) {
     isLoading.value = false
@@ -57,22 +51,17 @@ const onSubmit = handleSubmit(async (values) => {
       errors.forEach((error: any) => {
         toast.error(error.detail)
       })
-    } else {
-      console.log('Error', error)
     }
   }
 })
 </script>
 <template>
   <div
-    class="flex flex-col bg-slate-100 items-center justify-center px-6 pt-8 mx-auto md:h-screen pt:mt-0 dark:bg-gray-900"
-  >
+    class="flex flex-col bg-slate-100 items-center justify-center px-6 pt-8 mx-auto md:h-screen pt:mt-0 dark:bg-gray-900">
     <!-- Card -->
-    <div
-      class="w-full max-w-md p-x10 py-20 p-6 space-y-8 sm:p-8 bg-white rounded-3xl border shadow dark:bg-gray-800"
-    >
+    <div class="w-full max-w-md p-x10 py-20 p-6 space-y-8 sm:p-8 bg-white rounded-3xl border shadow dark:bg-gray-800">
       <h1 class="text-5xl text-center font-bold text-gray-900 dark:text-white">
-        Bienvenido
+        Iniciar Sesion
       </h1>
       <form
         class="mt-8 space-y-6"
@@ -81,17 +70,12 @@ const onSubmit = handleSubmit(async (values) => {
       >
         <!-- Email  Input-->
         <div>
-          <label
-            for="email"
-            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-          >Correo</label
-          >
           <input
             v-model="emailValue"
             type="text"
             name="email"
             id="email"
-            placeholder="Ingrese su correo"
+            placeholder="Correo Electronico"
             class="w-full border-2 border-gray-100 rounded-xl p-4 mt-1 bg-transparent"
             :class="{
               'border-red-500 focus:ring-red-500 dark:bg-gray-700 focus:border-red-500':
@@ -106,17 +90,12 @@ const onSubmit = handleSubmit(async (values) => {
 
         <!-- Password Input -->
         <div>
-          <label
-            for="password"
-            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-          >Contraseña</label
-          >
           <input
             v-model="passwordValue"
             type="password"
             name="password"
             id="password"
-            placeholder="Ingrese su contraseña"
+            placeholder="Contraseña"
             class="w-full border-2 border-gray-100 rounded-xl p-4 mt-1 bg-transparent"
             :class="{
               'border-red-500 focus:ring-red-500 dark:bg-gray-700 focus:border-red-500 ':
@@ -132,8 +111,6 @@ const onSubmit = handleSubmit(async (values) => {
         <div class="mt-8 flex flex-col gap-y-4">
 
 
-
-
           <button
             :disabled="isLoading"
             type="submit"
@@ -147,9 +124,10 @@ const onSubmit = handleSubmit(async (values) => {
 
         <div class="text-sm font-medium text-gray-500 dark:text-gray-400">
           No estas Registrado?
-          <a class="text-primary-700 hover:underline dark:text-primary-500">
-            Crear Una cuenta</a
-          >
+          <RouterLink to="/register"
+                      class="text-primary-700 hover:underline dark:text-primary-500  hover:text-emerald-600">
+            Crear Una cuenta
+          </RouterLink>
         </div>
       </form>
     </div>

@@ -20,7 +20,7 @@ Route::prefix('auth')
         Route::post('/reset-password', [NewPasswordController::class, 'store'])->middleware('guest')->name('password.store');
         Route::get('/verify-email/{id}/{hash}', VerifyEmailController::class)->middleware(['signed', 'throttle:6,1'])->name('verification.verify');
         Route::post('/email/verification-notification', [EmailVerificationNotificationController::class, 'store'])->middleware(['auth', 'throttle:6,1'])->name('verification.send');
-        Route::post('/logout', LogoutController::class)->middleware('auth:backend')->name('logout');
+        Route::post('/logout', LogoutController::class)->middleware('auth:api')->name('logout');
     });
 
 Route::prefix('oauth')
@@ -39,7 +39,7 @@ Route::prefix('oauth')
             'middleware' => 'web',
         ]);
 
-        Route::middleware(['auth:backend'])->group(function () {
+        Route::middleware(['auth:api'])->group(function () {
             Route::post('/token/refresh', [
                 'uses' => 'TransientTokenController@refresh',
                 'as' => 'token.refresh',
