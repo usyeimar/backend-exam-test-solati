@@ -57,17 +57,21 @@ navegador.
 
 # Guia de usuario(paso a paso) 
 
-1. Pantalla de inicio de sesión
+1. Pantalla de registro,si no tienes una cuenta puedes registrarte
+   ![Registro](./docs/00.jpg)
 
-![Login](./docs/01.jpeg)
+2. Pantalla de inicio de sesión
 
-2. Ingresar  las credenciales de usuario, luego click en el boton de iniciar sesión
-   ![Modulo de tareas](./docs/02.jpeg)
+![Login](./docs/01.jpg)
 
-3. Pantalla de tareas,durante la carga de esta pantalla se realiza una peticion a la API para obtener las tareas del usuario
-   ![Crear tarea](./docs/03.jpeg)
 
-5. Crear tarea
+3. Ingresar  las credenciales de usuario, luego click en el boton de iniciar sesión
+   ![Modulo de tareas](./docs/02.jpg)
+
+4. Pantalla de tareas,durante la carga de esta pantalla se realiza una peticion a la API para obtener las tareas del usuario
+   ![Crear tarea](./docs/03.jpg)
+
+5. Listado de tareas, en esta pantalla se puede visualizar las tareas del usuario y crear nuevas tareas
    ![Crear tarea](./docs/04.jpg)
 
 
