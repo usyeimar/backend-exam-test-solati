@@ -12,14 +12,7 @@ RUN docker-php-ext-install pdo  pdo_pgsql
 
 EXPOSE 8081
 
-#Run migration and seed
-CMD ["/usr/local/bin/php", "artisan", "migrate"]
 
-#Setup passport keys
-CMD ["/usr/local/bin/php", "artisan", "passport:kesy", "--force", "-n"]
-
-#Setup Client
-CMD ["/usr/local/bin/php", "artisan passport:client", "--password", "--no-interaction"]
 
 COPY scripts/passport.sh  /usr/local/bin/passport.sh
 

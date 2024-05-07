@@ -17,7 +17,7 @@ services:
       retries: 5
     volumes:
       - ./scripts/pgsql:/docker-entrypoint-initdb.d
-      - .data/pgsql:/var/lib/postgresql/data
+      - ./data/pgsql:/var/lib/postgresql/data
     networks:
       - todo-app-network
 
@@ -39,7 +39,7 @@ services:
     networks:
       - todo-app-network
     volumes:
-      - ".data/minio:/data"
+      - ./data:/data/minio
     environment:
       MINIO_ROOT_USER: "minio"
       MINIO_ROOT_PASSWORD: "uikui5choRith0ZieV2zohN5aish5r"
@@ -56,12 +56,11 @@ services:
     image: todo-app-api
     restart: unless-stopped
     tty: true
-    ports:
-      - "8081:8081"
     volumes:
       - ./backend:/var/www/html
     labels:
       - "traefik.http.routers.api.rule=(Host(`todo-app.localhost`) && PathPrefix(`/api`))"
+      - "traefik.http.services.api.loadbalancer.server.port=8081"
     depends_on:
       - pgsql
       - traefik
@@ -111,7 +110,7 @@ services:
       - "443:443"
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-
+      - ./traefik/acme.json:/acme.json
     networks:
       - todo-app-network
 
