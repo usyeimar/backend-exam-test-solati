@@ -22,9 +22,7 @@ const router = createRouter({
     {
       path: '/',
       name: 'home',
-      redirect(to) {
-        return { name: 'dashboard' }
-      }
+      redirect: '/dashboard'
     },
     {
       path: '/dashboard',
