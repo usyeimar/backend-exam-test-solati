@@ -43,6 +43,9 @@ const addTask = () => {
     })
   }
 }
+const editTask = (id: string) => {
+  router.push({ name: 'task-edit', params: { id } })
+}
 
 
 const deleteTask = async (id: string) => {
@@ -130,6 +133,7 @@ onMounted(async () => {
           @delete-task="deleteTask"
           @upload-attachment="uploadAttachment"
           @download-attachment="downloadAttachment"
+          @edit-task="editTask"
           @toggle-task="toggleTask"
           @show-task="showTask"
         />

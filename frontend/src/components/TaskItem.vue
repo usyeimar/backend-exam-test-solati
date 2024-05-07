@@ -1,6 +1,6 @@
 <script setup lang="ts">
 
-import { EyeIcon, TrashIcon } from '@heroicons/vue/24/solid'
+import { EyeIcon, TrashIcon,PencilIcon } from '@heroicons/vue/24/solid'
 import type { Task } from '@/types'
 
 defineProps<{
@@ -10,7 +10,8 @@ defineProps<{
 const emits = defineEmits([
   'delete-task',
   'toggle-task',
-  'show-task'
+  'show-task',
+  'edit-task'
 ])
 </script>
 
@@ -31,6 +32,7 @@ const emits = defineEmits([
     <div class="flex justify-end gap-2">
       <TrashIcon class="h-[20px] w-[20px] text-gray-400 cursor-pointer" @click="emits('delete-task', task.uuid)" />
       <EyeIcon class="h-[20px] w-[20px] text-gray-400 cursor-pointer" @click="emits('show-task', task.uuid)" />
+      <PencilIcon class="h-[20px] w [20px] text-gray-400 cursor-pointer" @click="emits('edit-task', task.uuid)" />
     </div>
   </li>
 

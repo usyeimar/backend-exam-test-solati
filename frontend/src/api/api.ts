@@ -17,8 +17,8 @@ export class Api {
 
   }
 
-  async getTask(id: number): Promise<{
-    data: any
+  async getTask(id: string): Promise<{
+    data: Task
   }> {
     const { data } = await http.get(`/api/v1/tasks/${id}`)
 
@@ -33,13 +33,14 @@ export class Api {
     return data
   }
 
-  async updateTask(id: number, payload: {
+  async updateTask(id: string, payload: {
     title: string,
-    description: string
+    description: string,
+    due_date: string,
   }): Promise<{
-    data: any
+    data: Task
   }> {
-    const { data } = await http.put(`/api/v1/tasks/${id}`, payload)
+    const { data } = await http.patch(`/api/v1/tasks/${id}`, payload)
 
     return data
   }
@@ -60,6 +61,10 @@ export class Api {
     const { data, headers } = await http.get(`/api/v1/attachments/download/${id}`, { responseType: 'blob' })
     const blob = new Blob([data], { type: headers['content-type'] })
     saveAs(blob, filename)
+  }
+
+  async deleteAttachment(id: string): Promise<void> {
+    await http.delete(`/api/v1/attachments/${id}`)
   }
 
   async toggleTask(id: string, completed = false): Promise<void> {

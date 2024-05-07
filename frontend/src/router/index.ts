@@ -31,10 +31,23 @@ const router = createRouter({
       name: 'dashboard',
       component: import('../views/Dashboard.vue'),
       beforeEnter: authGuard
-    }, {
-      path: '/tasks/:id',
+    },
+    {
+      path: '/tasks/detail/:id',
       name: 'task-detail',
-      component: import('../views/TaskDetail.vue')
+      component: import('../components/TaskDetail.vue'),
+      beforeEnter: authGuard,
+      props: (route) => ({
+        id: route.params.id
+      })
+    }, {
+      path: '/task/edit/:id',
+      name: 'task-edit',
+      component: import('../components/TaskEdit.vue'),
+      beforeEnter: authGuard,
+      props: (route) => ({
+        id: route.params.id
+      })
     },
     {
       path: '/login',
