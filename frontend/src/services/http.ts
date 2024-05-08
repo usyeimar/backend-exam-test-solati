@@ -4,10 +4,7 @@ const { value: authToken } = JSON.parse(
   localStorage.getItem('token') || '{}'
 )
 
-if (!authToken) {
-  // Redirect to login page
-    window.location.href = '/login'
-}
+
 const http = axios.create({
   headers: {
     'Content-Type': 'application/json'
