@@ -1,16 +1,22 @@
 # Use the node image from official Docker Hub
-FROM node:current-alpine
+FROM node:20-slim AS base
 
-
-# set the working directory
-WORKDIR /var/www/html
+ENV PNPM_HOME="/pnpm"
+ENV PATH="$PNPM_HOME:$PATH"
+RUN corepack enable
 
 COPY . /var/www/html
-#
-RUN yarn install -y
+WORKDIR /var/www/html
+
+
+
+
+FROM base AS build
+RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --frozen-lockfile
+
 
 
 # Expose the port 8082
 EXPOSE 8082
 # Start Nginx to serve the application
-CMD ["yarn","dev"]   
+CMD ["pnpm", "dev"]

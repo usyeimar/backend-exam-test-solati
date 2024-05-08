@@ -5,11 +5,15 @@ const { value: authToken } = JSON.parse(
 )
 
 
-const http = axios.create({
-  headers: {
-    'Content-Type': 'application/json'
+const http = axios.create({ headers: { 'Content-Type': 'application/json' } })
+
+http.interceptors.request.use((config) => {
+  if (authToken) {
+    config.headers.Authorization = `Bearer ${authToken}`
   }
+  return config
 })
+
 
 const mode = import.meta.env.MODE
 
@@ -17,13 +21,6 @@ if (mode === 'development') {
   http.defaults.baseURL = import.meta.env.VITE_API_URL
 }
 
-
-http.defaults.headers.common['Content-Type'] = 'application/json'
-http.defaults.headers.common['Accept'] = 'application/json'
-
-if (authToken) {
-  http.defaults.headers.common['Authorization'] = `Bearer ${authToken}`
-}
 
 
 export default http

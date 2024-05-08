@@ -20,7 +20,6 @@ class LoginController extends Controller
      */
     public function __invoke(LoginRequest $request, AuthenticationService $service)
     {
-
         try {
             return $service->login($request->validated(), true);
         } catch (Exception $e) {

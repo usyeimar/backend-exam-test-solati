@@ -26,18 +26,18 @@ const pendingTasks = computed(() => {
 const isEmpty = computed(() => tasks.value.length === 0)
 
 
-const addTask = () => {
+const addTask = async () => {
   const newTask = document.getElementById('new_task') as HTMLInputElement
   if (newTask.value) {
-    const task: Task = {
+    const taskBody: Task = {
       title: newTask.value,
       description: 'no description',
       due_at: formatearFecha(new Date())
     }
     newTask.value = ''
-    api.createTask(task).then(() => {
+    await api.createTask(taskBody).then(({data}) => {
       toast('Task created', { type: 'success', delay: 100, autoClose: true })
-      tasks.value.push(task)
+      tasks.value.push(data)
     }).catch((error) => {
       console.log('Error', error)
     })
@@ -119,24 +119,16 @@ onMounted(async () => {
       <input type="file" id="file" class="hidden" />
 
       <input type="text" id="new_task" v-model="newTask" @keyup.enter="addTask"
-             class="w-full h-[50px] p-[15px] bg-[#f3f3f3] text-[#333] border-[1px] border-[transparent] rounded-[10px] [transition:border_0.3s_linear]"
-             placeholder="Nueva tarea"
-             required />
+        class="w-full h-[50px] p-[15px] bg-[#f3f3f3] text-[#333] border-[1px] border-[transparent] rounded-[10px] [transition:border_0.3s_linear]"
+        placeholder="Nueva tarea" required />
     </div>
 
     <!-- Lista de tareas  -->
     <div class="px-[10px] py-0 ">
       <ul v-if="tasks.length > 0">
-        <TaskItem
-          v-for="task in tasks"
-          :key="task.uuid" :task="task"
-          @delete-task="deleteTask"
-          @upload-attachment="uploadAttachment"
-          @download-attachment="downloadAttachment"
-          @edit-task="editTask"
-          @toggle-task="toggleTask"
-          @show-task="showTask"
-        />
+        <TaskItem v-for="task in tasks" :key="task.uuid" :task="task" @delete-task="deleteTask"
+          @upload-attachment="uploadAttachment" @download-attachment="downloadAttachment" @edit-task="editTask"
+          @toggle-task="toggleTask" @show-task="showTask" />
       </ul>
       <TaskEmpty v-if="isEmpty && !loading" />
       <TaskLoading v-if="loading" />
@@ -146,6 +138,4 @@ onMounted(async () => {
 
 </template>
 
-<style scoped>
-
-</style>
+<style scoped></style>

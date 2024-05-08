@@ -13,8 +13,6 @@ export class Api {
     const { data } = await http.get('/api/v1/tasks')
 
     return data
-
-
   }
 
   async getTask(id: string): Promise<{
@@ -26,7 +24,7 @@ export class Api {
   }
 
   async createTask(payload: Task): Promise<{
-    data: any
+    data: Task
   }> {
     const { data } = await http.post('/api/v1/tasks', payload)
 
